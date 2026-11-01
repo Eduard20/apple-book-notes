@@ -1,0 +1,15 @@
+{
+  "name": "@abn/extractor",
+  "version": "0.1.0",
+  "private": true,
+  "type": "module",
+  "scripts": {
+    "extract": "node --no-warnings src/index.ts"
+  },
+  "engines": {
+    "node": ">=24"
+  },
+  "exports": {
+    ".": "./src/index.ts"
+  }
+}

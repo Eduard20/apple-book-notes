@@ -1,0 +1,13 @@
+{
+  "name": "apple-book-notes",
+  "private": true,
+  "type": "module",
+  "workspaces": [
+    "packages/*",
+    "apps/*"
+  ],
+  "scripts": {
+    "extract": "npm run extract -w @abn/extractor",
+    "dev": "npm run dev -w @abn/web"
+  }
+}
