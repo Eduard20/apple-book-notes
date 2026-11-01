@@ -65,6 +65,8 @@ export function db(): DatabaseSync {
     const conn = new DatabaseSync(DB_PATH);
     conn.exec("PRAGMA journal_mode = WAL; PRAGMA foreign_keys = ON;");
     conn.exec(SCHEMA);
+    // Normalized text for de-duplicating highlights that arrive via different routes.
+    conn.function("text_key", { deterministic: true }, (t) => textKey(String(t ?? "")));
     g.__abnDb = conn;
   }
   return g.__abnDb;
@@ -90,4 +92,9 @@ export function getMeta(key: string): string | null {
 
 export function setMeta(key: string, value: string) {
   db().prepare("INSERT INTO meta (key, value) VALUES (?, ?) ON CONFLICT(key) DO UPDATE SET value = excluded.value").run(key, value);
+}
+
+/** Lowercase, strip quotes/punctuation/whitespace: same highlight from Mac DB vs. iOS share text → same key. */
+export function textKey(t: string): string {
+  return t.toLowerCase().replace(/[\s"'“”«»„‘’.,;:!?…—–-]+/g, "");
 }

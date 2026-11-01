@@ -4,10 +4,11 @@
   "type": "module",
   "workspaces": [
     "packages/*",
-    "apps/*"
+    "apps/web"
   ],
   "scripts": {
     "extract": "npm run extract -w @abn/extractor",
-    "dev": "npm run dev -w @abn/web"
+    "dev": "npm run dev -w @abn/web",
+    "ios": "npm --prefix apps/mobile run ios:device"
   }
 }

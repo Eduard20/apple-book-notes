@@ -1,0 +1,41 @@
+{
+  "expo": {
+    "name": "Book Notes",
+    "slug": "book-notes",
+    "version": "1.0.0",
+    "scheme": "booknotes",
+    "orientation": "portrait",
+    "icon": "./assets/icon.png",
+    "userInterfaceStyle": "automatic",
+    "ios": {
+      "bundleIdentifier": "com.eduardsimonyan.booknotes",
+      "supportsTablet": true,
+      "infoPlist": {
+        "NSLocalNetworkUsageDescription": "Book Notes syncs your highlights from the Book Notes app on your Mac over your Wi-Fi network.",
+        "NSAppTransportSecurity": {
+          "NSAllowsLocalNetworking": true
+        },
+        "ITSAppUsesNonExemptEncryption": false
+      },
+      "appleTeamId": "3ACBQS6N67"
+    },
+    "plugins": [
+      "expo-router",
+      "expo-sqlite",
+      [
+        "expo-share-intent",
+        {
+          "iosActivationRules": {
+            "NSExtensionActivationSupportsText": true
+          },
+          "iosShareExtensionName": "Book Notes Share",
+          "disableAndroid": true
+        }
+      ],
+      "expo-font"
+    ],
+    "experiments": {
+      "typedRoutes": true
+    }
+  }
+}

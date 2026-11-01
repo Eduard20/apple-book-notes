@@ -44,6 +44,11 @@ async function Header() {
           {s.uncategorized > 0 && s.highlights > 0 && ` · ${s.uncategorized} uncategorized`}
           {s.lastImportAt && ` · imported ${new Date(s.lastImportAt).toLocaleString()}`}
         </p>
+        {process.env.ABN_LAN_ADDRESS && (
+          <p className="mt-1 text-xs text-neutral-400">
+            iPhone sync address: <code className="rounded bg-neutral-200/70 px-1.5 py-0.5 text-neutral-700 dark:bg-neutral-800 dark:text-neutral-300">{process.env.ABN_LAN_ADDRESS}</code>
+          </p>
+        )}
       </div>
       <ImportButton hasCategories={s.categories > 0} />
     </header>

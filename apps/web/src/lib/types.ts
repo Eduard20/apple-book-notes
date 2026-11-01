@@ -67,3 +67,23 @@ export const COLOR_SWATCH: Record<HighlightColor, string> = {
   underline: "#ef4444",
   unknown: "#a3a3a3",
 };
+
+/** GET /api/export: full snapshot for offline clients (the iOS app). */
+export interface ExportPayload {
+  exportedAt: string;
+  lastImportAt: string | null;
+  books: { id: string; title: string; author: string | null; inLibrary: boolean }[];
+  categories: { id: number; name: string; description: string | null }[];
+  highlights: {
+    id: string;
+    bookId: string;
+    text: string;
+    note: string | null;
+    color: HighlightColor;
+    chapter: string | null;
+    sortKey: number;
+    createdAt: string | null;
+    favorite: boolean;
+    categoryIds: number[];
+  }[];
+}

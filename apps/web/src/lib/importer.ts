@@ -49,17 +49,33 @@ export function importFromAppleBooks(): ImportResult {
       );
     }
 
+    // Count before de-duplication below, so "new" means new from Apple Books.
+    const added = (d.prepare("SELECT count(*) n FROM highlights").get() as { n: number }).n - before;
+
     // Highlights deleted in Apple Books: hide them, but keep the row so tags/favorites survive a mistake.
     d.exec("CREATE TEMP TABLE IF NOT EXISTS seen (id TEXT PRIMARY KEY)");
     d.exec("DELETE FROM seen");
     const ins = d.prepare("INSERT INTO seen (id) VALUES (?)");
     for (const h of data.highlights) ins.run(h.id);
-    const removed = d.prepare("UPDATE highlights SET removed = 1 WHERE removed = 0 AND id NOT IN (SELECT id FROM seen)").run().changes;
+    // (Highlights shared from the phone have "shared:" IDs and aren't in Apple's DB, so leave them alone.)
+    const removed = d
+      .prepare("UPDATE highlights SET removed = 1 WHERE removed = 0 AND id NOT LIKE 'shared:%' AND id NOT IN (SELECT id FROM seen)")
+      .run().changes;
+
+    // A highlight shared from the phone that has since arrived via iCloud → keep the Apple copy
+    // (it has color + position), carrying over the user's favorite.
+    d.exec(`
+      UPDATE highlights SET favorite = 1
+       WHERE id NOT LIKE 'shared:%' AND favorite = 0
+         AND text_key(text) IN (SELECT text_key(text) FROM highlights WHERE id LIKE 'shared:%' AND favorite = 1);
+      DELETE FROM highlights
+       WHERE id LIKE 'shared:%'
+         AND text_key(text) IN (SELECT text_key(text) FROM highlights WHERE id NOT LIKE 'shared:%');
+    `);
 
     d.exec("INSERT INTO highlights_fts(highlights_fts) VALUES ('rebuild')");
     setMeta("last_import_at", new Date().toISOString());
 
-    const after = (d.prepare("SELECT count(*) n FROM highlights").get() as { n: number }).n;
-    return { books: data.books.length, highlights: data.highlights.length, added: after - before, removed: Number(removed) };
+    return { books: data.books.length, highlights: data.highlights.length, added, removed: Number(removed) };
   });
 }

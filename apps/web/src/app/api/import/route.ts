@@ -1,9 +1,7 @@
 import { importFromAppleBooks } from "@/lib/importer";
 import { categorize, hasCredentials } from "@/lib/categorize";
+import { tryLock, unlock } from "@/lib/lock";
 import type { ImportEvent } from "@/lib/types";
-
-// Only one import at a time per server process.
-let running = false;
 
 /**
  * POST /api/import            → import from Apple Books, then AI-categorize new highlights
@@ -12,8 +10,7 @@ let running = false;
  */
 export async function POST(req: Request) {
   const rebuild = new URL(req.url).searchParams.get("rebuild") === "1";
-  if (running) return Response.json({ error: "An import is already running" }, { status: 409 });
-  running = true;
+  if (!tryLock()) return Response.json({ error: "An import is already running" }, { status: 409 });
 
   const encoder = new TextEncoder();
   const stream = new ReadableStream({
@@ -47,7 +44,7 @@ export async function POST(req: Request) {
       } catch (e) {
         send({ type: "error", message: (e as Error).message });
       } finally {
-        running = false;
+        unlock();
         controller.close();
       }
     },
