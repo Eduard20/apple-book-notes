@@ -16,8 +16,8 @@ Then click **Import from Apple Books**. Your terminal needs Full Disk Access (Sy
 
 Expo / React Native. Keeps a full offline copy of your library and syncs with the Mac over Wi-Fi.
 
-- **Sync tab:** enter the "iPhone sync address" shown at the top of the web page, then tap Sync now. Phone highlights reach the Mac through iCloud anyway, so this one sync brings you everything.
-- **Share from Apple Books:** in a book open Notes, select highlights, tap Share, then Book Notes. Or tap Copy, then use **Paste from Apple Books** on the Sync tab. They're sent to the Mac on the next sync, de-duplicated, and AI-categorized.
+- **Add tab:** enter the "iPhone sync address" shown at the top of the web page, then tap Sync now. Phone highlights reach the Mac through iCloud anyway, so this one sync brings you everything.
+- **Share from Apple Books:** in a book open Notes, select highlights, tap Share, then Book Notes. Or tap Copy, then use **Paste from Apple Books** on the Add tab. They're sent to the Mac on the next sync, de-duplicated, and AI-categorized.
 
 Install / update (free Apple ID works, but the app needs reinstalling every 7 days):
 
@@ -49,3 +49,4 @@ Shared types: `apps/web/src/lib/types.ts`.
 ## Re-importing
 
 Safe to run any time. Highlights upsert by Apple's IDs, so your favorites, categories and renamed books are kept. Only new highlights get sent to Claude. Highlights deleted in Apple Books are hidden, not destroyed.
+

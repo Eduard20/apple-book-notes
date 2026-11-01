@@ -8,8 +8,10 @@ export default function TabsLayout() {
     <Tabs
       screenOptions={{
         tabBarActiveTintColor: t.accent,
+        tabBarInactiveTintColor: t.muted,
+        tabBarLabelStyle: { fontSize: 11, fontWeight: "600" },
+        headerTitleStyle: { color: t.text, fontSize: 14, fontWeight: "600" },
         headerStyle: { backgroundColor: t.bg },
-        headerTitleStyle: { color: t.text },
         headerShadowVisible: false,
         tabBarStyle: { backgroundColor: t.card, borderTopColor: t.border },
         sceneStyle: { backgroundColor: t.bg },
@@ -17,16 +19,17 @@ export default function TabsLayout() {
     >
       <Tabs.Screen
         name="index"
-        options={{ title: "Highlights", tabBarIcon: ({ color }) => <SymbolView name="quote.opening" tintColor={color} size={22} /> }}
+        options={{ title: "Book Notes", tabBarLabel: "Highlights", tabBarIcon: ({ color }) => <SymbolView name="quote.opening" tintColor={color} size={22} /> }}
       />
       <Tabs.Screen
         name="browse"
-        options={{ title: "Browse", tabBarIcon: ({ color }) => <SymbolView name="square.grid.2x2" tintColor={color} size={22} /> }}
+        options={{ title: "Your library", tabBarLabel: "Library", tabBarIcon: ({ color }) => <SymbolView name="square.grid.2x2" tintColor={color} size={22} /> }}
       />
       <Tabs.Screen
         name="sync"
-        options={{ title: "Sync", tabBarIcon: ({ color }) => <SymbolView name="arrow.triangle.2.circlepath" tintColor={color} size={22} /> }}
+        options={{ title: "Add highlights", tabBarLabel: "Add", tabBarIcon: ({ color }) => <SymbolView name="plus.circle" tintColor={color} size={22} /> }}
       />
     </Tabs>
   );
 }
+
